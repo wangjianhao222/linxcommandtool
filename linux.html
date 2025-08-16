@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux System Information Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            text-align: center;
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        h1, h2, h3 {
+            color: #0056b3;
+        }
+        section {
+            background: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        code {
+            background: #e8ecef;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        pre {
+            background: #e8ecef;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Linux System Information Tool</h1>
+        <p>A Comprehensive System Monitoring Utility for Linux</p>
+    </header>
+
+    <section id="overview">
+        <h2>Overview</h2>
+        <p>The <strong>Linux System Information Tool</strong> (<code>linux.py</code>) is a Python-based utility designed to collect and display detailed system information for Linux environments. By leveraging Python's <code>subprocess</code> module and standard Linux commands, it provides a consolidated view of system metrics, including OS details, CPU, memory, disk usage, network interfaces, running processes, logged-in users, and system logs. This tool is ideal for system administrators, developers, and Linux enthusiasts seeking an efficient way to monitor and diagnose system performance.</p>
+    </section>
+
+    <section id="features">
+        <h2>Features</h2>
+        <h3>System Information</h3>
+        <ul>
+            <li>Retrieves OS metadata (name, ID, version, build) from <code>/etc/os-release</code>.</li>
+            <li>Displays hostname, kernel version, architecture, uptime, and load averages using commands like <code>uname</code> and <code>uptime</code>.</li>
+        </ul>
+        <h3>CPU Information</h3>
+        <ul>
+            <li>Extracts CPU model, physical CPU count, core count, and logical processors from <code>/proc/cpuinfo</code>.</li>
+        </ul>
+        <h3>Memory Information</h3>
+        <ul>
+            <li>Reports total, free, used, buffered, and cached memory, plus swap space details, from <code>/proc/meminfo</code>.</li>
+            <li>Converts memory values to GB for readability.</li>
+        </ul>
+        <h3>Disk Information</h3>
+        <ul>
+            <li>Shows disk usage statistics with human-readable output using <code>df -h</code>.</li>
+        </ul>
+        <h3>Network Information</h3>
+        <ul>
+            <li>Collects interface details, including IPv4/IPv6 addresses, traffic statistics, and error counts using <code>ip -s a</code>.</li>
+            <li>Converts byte counts to MB for clarity.</li>
+        </ul>
+        <h3>Process Information</h3>
+        <ul>
+            <li>Lists the top 20 processes by CPU and memory usage with <code>ps aux --sort=-%cpu,-%mem</code>.</li>
+        </ul>
+        <h3>Logged-in Users</h3>
+        <ul>
+            <li>Displays active user sessions using <code>who</code>.</li>
+        </ul>
+        <h3>System Logs</h3>
+        <ul>
+            <li>Retrieves the latest 15 log entries, preferring <code>journalctl</code> with a fallback to <code>dmesg</code>.</li>
+        </ul>
+    </section>
+
+    <section id="requirements">
+        <h2>Requirements</h2>
+        <ul>
+            <li><strong>Python</strong>: Version 3.6 or higher.</li>
+            <li><strong>Operating System</strong>: Linux (e.g., Ubuntu, CentOS, Debian).</li>
+            <li><strong>Dependencies</strong>: Standard Python libraries (<code>subprocess</code>, <code>os</code>, <code>platform</code>, <code>re</code>, <code>time</code>).</li>
+            <li><strong>System Commands</strong>: Requires <code>cat</code>, <code>uname</code>, <code>df</code>, <code>ip</code>, <code>ps</code>, <code>who</code>, <code>journalctl</code>, and <code>dmesg</code> in the system PATH.</li>
+            <li><strong>Permissions</strong>: Elevated privileges may be needed for some commands (e.g., <code>dmesg</code>).</li>
+        </ul>
+    </section>
+
+    <section id="installation">
+        <h2>Installation</h2>
+        <h3>Prerequisites</h3>
+        <p>Ensure Python 3.x is installed:</p>
+        <pre><code>python3 --version</code></pre>
+        <p>Install Python if needed:</p>
+        <pre><code>sudo apt install python3  # Debian/Ubuntu
+sudo yum install python3  # CentOS/RHEL</code></pre>
+        <p>Verify system commands:</p>
+        <pre><code>which cat uname df ip ps who journalctl dmesg</code></pre>
+
+        <h3>Setup</h3>
+        <ol>
+            <li>Download the script:</li>
+            <pre><code>wget &lt;script_url&gt;/linux.py</code></pre>
+            <li>Set executable permissions:</li>
+            <pre><code>chmod +x linux.py</code></pre>
+            <li>Run the script:</li>
+            <pre><code>python3 linux.py</code></pre>
+        </ol>
+    </section>
+
+    <section id="usage">
+        <h2>Usage</h2>
+        <p>Run the script to display system information in the terminal:</p>
+        <pre><code>python3 linux.py</code></pre>
+        <p>The output is organized into sections: System, CPU, Memory, Disk, Network, Processes, Users, and Logs.</p>
+        <h3>Example Output</h3>
+        <pre><code>🚀 正在收集 Linux 系统信息... 🚀
+
+--- 系统信息 ---
+---------------
+操作系统名称: Ubuntu 22.04.3 LTS
+主机名: my-server
+内核信息: Linux my-server 5.15.0-73-generic
+架构: x86_64
+系统运行时间: 2 days, 3:45
+负载平均值 (1, 5, 15 分钟): 0.15, 0.22, 0.19
+
+--- CPU 信息 ---
+--------------
+CPU 型号: Intel(R) Core(TM) i7-9700 CPU @ 3.00GHz
+物理 CPU 数量: 1
+每个物理 CPU 的核心数: 8
+逻辑处理器总数: 8
+...</code></pre>
+        <p>Redirect output to a file for logging:</p>
+        <pre><code>python3 linux.py > system_info.txt</code></pre>
+    </section>
+
+    <section id="advanced">
+        <h2>Advanced Usage</h2>
+        <ul>
+            <li><strong>Selective Execution</strong>: Modify the <code>main()</code> function to call specific functions (e.g., <code>get_cpu_info()</code>).</li>
+            <li><strong>Automation</strong>: Schedule with <code>cron</code>:
+                <pre><code>0 * * * * python3 /path/to/linux.py >> /path/to/system_report.log</code></pre>
+            </li>
+            <li><strong>Custom Output</strong>: Adjust process count in <code>get_process_info()</code> or log lines in <code>get_system_logs()</code>.</li>
+        </ul>
+    </section>
+
+    <section id="troubleshooting">
+        <h2>Troubleshooting</h2>
+        <ul>
+            <li><strong>Command Not Found</strong>: Install missing tools (e.g., <code>apt install iproute2 procps</code>).</li>
+            <li><strong>Permission Issues</strong>: Run with <code>sudo</code> for restricted commands.</li>
+            <li><strong>Incomplete Output</strong>: Ensure system services are running and commands are supported.</li>
+        </ul>
+    </section>
+
+    <section id="contributing">
+        <h2>Contributing</h2>
+        <p>Contributions are welcome! To contribute:</p>
+        <ol>
+            <li>Fork the repository.</li>
+            <li>Create a feature branch: <code>git checkout -b feature/new-feature</code></li>
+            <li>Commit changes: <code>git commit -m "Add new feature"</code></li>
+            <li>Push: <code>git push origin feature/new-feature</code></li>
+            <li>Open a pull request.</li>
+        </ol>
+    </section>
+
+    <section id="license">
+        <h2>License</h2>
+        <p>MIT License. See the <a href="LICENSE">LICENSE</a> file for details.</p>
+    </section>
+
+    <footer>
+        <p>Built with Python and Linux utilities. Last updated: August 2025.</p>
+    </footer>
+</body>
+</html>
